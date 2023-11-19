@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>JDK_Unit6</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>Paradox Doors</name>
+    <description>Игра. 3 двери один приз. Парадокс Монти Холла 50/50</description>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <lib.path>lib/</lib.path>
+        <add.to.class.path>${lib.path}sqljdbc4-4.0.jar</add.to.class.path>
+        <product.company>Kalinin Pavel</product.company>
+        <project.organization.name>Kalinin Pavel</project.organization.name>
+        <project.inceptionYear>1977</project.inceptionYear>
+        <product.title>ParadoxDoors</product.title>
+        <exeFileName>ParadoxDoors</exeFileName>
+        <propertyForJavaCode>hello java</propertyForJavaCode>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots</artifactId>
+            <version>6.8.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <!--            <version>2.0.5</version> -->
+            <version>2.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!--
+                <dependency>
+                    <groupId>org.junit.jupiter</groupId>
+                    <artifactId>junit-jupiter-params</artifactId>
+                    <version>5.8.0-M1</version>
+                    <scope>test</scope>
+                </dependency>
+        -->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>sqljdbc4</artifactId>
+            <version>4.0</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!--
+                <dependency>
+                    <groupId>io.spring.dependency-management</groupId>
+                    <artifactId>io.spring.dependency-management.gradle.plugin</artifactId>
+                    <version>1.1.4</version>
+                    <type>pom</type>
+                </dependency>
+        -->
+
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!--<configLocation>checkstyle.xml</configLocation>-->
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>false</consoleOutput>
+                    <failsOnError>false</failsOnError>
+                    <failOnViolation>false</failOnViolation>
+                    <violationSeverity>false</violationSeverity>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-resource-one</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>run-files</directory>
+                                    <includes>
+                                        <include>run0_original.bat</include>
+                                        <include>run1_JDK_Unit6-1.0-SNAPSHOT.bat</include>
+                                        <include>run2_with-dependencies.bat</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.example</groupId>
+                <artifactId>MyFirstMavenPluginMojo</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <id>run-my-first-maven-plugin</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>my-first-maven-plugin</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>org.example.Main</mainClass>
+                            <classpathPrefix>${lib.path}</classpathPrefix>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path>${add.to.class.path}</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.example.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- зачем то class-path заполняет и еще ругается
+            Error: A JNI error has occurred, please check your installation and try again
+            Exception in thread "main" java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
+            !!!!!!! Удалил файлы META-INF\MSFTSIG.RSA и META-INF\MSFTSIG.SF - и эта хрень заработала!!!  :)
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.example.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.2</version>
+            </plugin>
+
+            <!--
+                        <plugin>
+                            <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                            <artifactId>launch4j-maven-plugin</artifactId>
+                            <version>2.4.1</version>
+                            <executions>
+                                <execution>
+                                    <id>plugin-loader</id>
+                                    <phase>package</phase>
+                                    <goals>
+                                        <goal>launch4j</goal>
+                                    </goals>
+                                    <configuration>
+                                        <headerType>console</headerType>
+                                        <stayAlive>true</stayAlive>
+                                        <outfile>${exeFileName}.exe</outfile>
+                                        <jar>${project.artifactId}.jar</jar>
+                                        <errTitle>${product.title}</errTitle>
+                                        <icon>favicon.ico</icon>
+                                        <classPath>
+                                            <mainClass>Boostrap</mainClass>
+                                            <addDependencies>true</addDependencies>
+                                            <preCp>anything</preCp>
+                                        </classPath>
+                                        <jre>
+                                            <minVersion>${maven.compiler.target}</minVersion>
+                                        </jre>
+                                        <versionInfo>
+                                            <fileVersion>${project.version}</fileVersion>
+                                            <txtFileVersion>${project.version}</txtFileVersion>
+                                            <fileDescription>Swing application</fileDescription>
+                                            <copyright>Copyright © 2023 ${product.company}</copyright>
+                                            <productVersion>${project.version}</productVersion>
+                                            <txtProductVersion>${project.version}</txtProductVersion>
+                                            <companyName>${product.company}</companyName>
+                                            <productName>${product.title}</productName>
+                                            <internalName>${exeFileName}</internalName>
+                                            <originalFilename>${exeFileName}.exe</originalFilename>
+                                        </versionInfo>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+            -->
+
+
+        </plugins>
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.4.5</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.2</version>
+                <configuration>
+                    <use>false</use>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <!--
+        <profiles>
+            <profile>
+                <id>build</id>
+                <build>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                            <artifactId>launch4j-maven-plugin</artifactId>
+                        </plugin>
+                    </plugins>
+                </build>
+            </profile>
+            <profile>
+                <id>launch4j1</id>
+                <build>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                            <artifactId>launch4j-maven-plugin</artifactId>
+                        </plugin>
+                    </plugins>
+                </build>
+            </profile>
+            <profile>
+                <id>launch4j2</id>
+                <build>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                            <artifactId>launch4j-maven-plugin</artifactId>
+                            <configuration>
+                                <skip>true</skip>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </build>
+            </profile>
+        </profiles>
+    -->
+
+<!--
+    <pluginRepositories>
+        <pluginRepository>
+            <id>oss-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <layout>default</layout>
+            <name>OSS Sonatype Snapshots</name>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+-->
+
+</project>
